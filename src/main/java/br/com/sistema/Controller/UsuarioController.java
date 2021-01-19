@@ -18,13 +18,14 @@ public class UsuarioController {
 	
 	
 	public Usuario create (Usuario ususario) {
-		return usuarioService.save(ususario);
+		 Usuario user = usuarioService.create(ususario);
+		 return user;
 	}
 	
 	public Page<Usuario> findAll(Pageable pageable){
 		Page<Usuario> page =usuarioService.findAll(pageable);
 				
-				return null;
+				return page;
 	}
 	
 
