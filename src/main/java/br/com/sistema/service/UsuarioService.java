@@ -33,15 +33,18 @@ public class UsuarioService {
 	}
 	
 	
-	public Usuario update( Long id) {
-		Usuario update = new Usuario();
+	public Usuario update(Usuario usuar, Long id) {
 		Optional<Usuario> saveUsuario = usuarioRepository.findById(id);
 		if(saveUsuario.isPresent()) {
-			update = usuarioRepository.save(update);
+			Usuario usuario = saveUsuario.get();
+				usuario.setNome(usuar.getNome());
+				usuario.setEmail(usuar.getEmail());
+				usuario.setPassword(usuar.getPassword());
+				return usuarioRepository.save(usuario);
 		}
 		
+		return null;
 		
-		return update;
 	}
 	
 	
@@ -53,7 +56,7 @@ public class UsuarioService {
 			usuarioRepository.delete(deletedUsuario);
 		}
 	}
-	
+
 	
 	
 	

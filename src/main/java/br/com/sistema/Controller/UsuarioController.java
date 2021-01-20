@@ -5,9 +5,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,22 +39,24 @@ public class UsuarioController {
 				return page;
 	}
 	
-	@GetMapping("{/id}")
+	@GetMapping(path="{/id}")
 	public Optional<Usuario> findbyId(Long id) {
 		return usuarioService.findById(id);
 	}
 	
 	
 	@PutMapping("{/id}")
-	public Usuario update(Long id) {
-		return usuarioService.update(id);
+	public ResponseEntity<Usuario> update(@RequestBody Usuario usuario, @PathVariable("id") Long id) {
+		Usuario usuarUpdate = usuarioService.update(usuario, id);
+		return new ResponseEntity<Usuario>(usuarUpdate, HttpStatus.OK);
 	}
 	
 	
 	
-	@DeleteMapping("{/id}")
-	public void delete(Long id) {
+	@DeleteMapping(path = "{id}")
+	public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 		usuarioService.delete(id);
+		return new ResponseEntity<Object>(HttpStatus.OK);
 	}
 
 }
