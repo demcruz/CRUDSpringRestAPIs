@@ -1,5 +1,7 @@
 package br.com.sistema.Entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,8 +18,13 @@ import lombok.Data;
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @Entity
-public class Usuario {
+public class Usuario implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4050406665330245744L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;

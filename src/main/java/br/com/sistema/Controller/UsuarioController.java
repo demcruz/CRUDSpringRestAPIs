@@ -1,8 +1,16 @@
 package br.com.sistema.Controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,17 +24,35 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioService usuarioService;
 	
-	
-	public Usuario create (Usuario ususario) {
-		 Usuario user = usuarioService.create(ususario);
-		 return user;
+	@PostMapping
+	public Usuario create ( @RequestBody Usuario usuario) {		
+		 
+		 return usuarioService.create(usuario);
 	}
 	
+	@GetMapping
 	public Page<Usuario> findAll(Pageable pageable){
 		Page<Usuario> page =usuarioService.findAll(pageable);
 				
 				return page;
 	}
 	
+	@GetMapping("{/id}")
+	public Optional<Usuario> findbyId(Long id) {
+		return usuarioService.findById(id);
+	}
+	
+	
+	@PutMapping("{/id}")
+	public Usuario update(Long id) {
+		return usuarioService.update(id);
+	}
+	
+	
+	
+	@DeleteMapping("{/id}")
+	public void delete(Long id) {
+		usuarioService.delete(id);
+	}
 
 }

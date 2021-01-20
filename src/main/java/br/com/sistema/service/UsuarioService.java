@@ -27,17 +27,13 @@ public class UsuarioService {
 		return page;
 	}
 	
-	public Usuario findById(Long id) {
-		Usuario usuario = new Usuario();
-		Optional<Usuario> saveUsuario = usuarioRepository.findById(id);
-		if(saveUsuario.isPresent()){
-			return saveUsuario.get();
-		}
-		return usuario;
+	public Optional<Usuario> findById(Long id) {		
+		return usuarioRepository.findById(id);
+	
 	}
 	
 	
-	public Usuario update(Usuario usuario, Long id) {
+	public Usuario update( Long id) {
 		Usuario update = new Usuario();
 		Optional<Usuario> saveUsuario = usuarioRepository.findById(id);
 		if(saveUsuario.isPresent()) {
@@ -50,7 +46,7 @@ public class UsuarioService {
 	
 	
 	
-	public void deleteUsuario(Long id) {
+	public void delete(Long id) {
 		Optional<Usuario> savedUsuario = usuarioRepository.findById(id);
 		if(savedUsuario.isPresent()) {
 			Usuario deletedUsuario = savedUsuario.get();
