@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.sistema.Entity.Usuario;
+import br.com.sistema.exceptions.UsuarioException;
 import br.com.sistema.repository.UsuarioRepository;
 
 @Service
@@ -27,23 +28,26 @@ public class UsuarioService {
 		return page;
 	}
 	
-	public Optional<Usuario> findById(Long id) {		
-		return usuarioRepository.findById(id);
+	public Optional<Usuario> findById(Long id) {
+		Optional<Usuario> user =  usuarioRepository.findById(id);
+		if (!user.isPresent()) {
+			throw new UsuarioException(id);
+		}
+			return usuarioRepository.findById(id);		
 	
 	}
 	
 	
-	public Usuario update(Usuario usuar, Long id) {
-		Optional<Usuario> saveUsuario = usuarioRepository.findById(id);
-		if(saveUsuario.isPresent()) {
-			Usuario usuario = saveUsuario.get();
-				usuario.setNome(usuar.getNome());
-				usuario.setEmail(usuar.getEmail());
-				usuario.setPassword(usuar.getPassword());
-				return usuarioRepository.save(usuario);
+	public Usuario update(Usuario usuario, Long id) {
+		Optional<Usuario> usur = usuarioRepository.findById(id);
+		if(!usur.isPresent()) {
+			throw new UsuarioException(id);
 		}
-		
-		return null;
+			Usuario usuarioUpdate = usur.get();
+			usuarioUpdate.setNome(usuario.getNome());
+			usuarioUpdate.setEmail(usuario.getEmail());
+			usuarioUpdate.setPassword(usuario.getPassword());			
+			return usuarioRepository.save(usuarioUpdate);
 		
 	}
 	
@@ -51,10 +55,11 @@ public class UsuarioService {
 	
 	public void delete(Long id) {
 		Optional<Usuario> savedUsuario = usuarioRepository.findById(id);
-		if(savedUsuario.isPresent()) {
-			Usuario deletedUsuario = savedUsuario.get();
-			usuarioRepository.delete(deletedUsuario);
-		}
+		if(!savedUsuario.isPresent()) {
+			throw new UsuarioException(id);
+		}		
+			usuarioRepository.deleteById(id);
+		
 	}
 
 	
